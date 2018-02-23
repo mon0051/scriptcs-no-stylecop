@@ -76,7 +76,7 @@ namespace ScriptCs
             AddAssemblyPaths(globalPaths);
             
             var scriptAssemblyPaths = _resolver.GetAssemblyPaths(_fileSystem.CurrentDirectory, true);
-            Log(new []{"Script Assembly Paths"});
+            Log(new[] {"Script Assembly Paths"});
             AddAssemblyPaths(scriptAssemblyPaths);
         }
 
