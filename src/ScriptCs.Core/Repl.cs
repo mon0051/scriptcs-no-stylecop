@@ -109,6 +109,8 @@ namespace ScriptCs
                 foreach (var reference in preProcessResult.References)
                 {
                     var referencePath = FileSystem.GetFullPath(Path.Combine(FileSystem.BinFolder, reference));
+                    Log(new[] {"referencePath",referencePath});
+                    
                     AddReferences(FileSystem.FileExists(referencePath) ? referencePath : reference);
                 }
 
@@ -179,7 +181,25 @@ namespace ScriptCs
                 Console.ResetColor();
             }
         }
-
+        private void Log(IEnumerable<string> logentrys)
+        {
+            foreach (var logentry in logentrys)
+            {
+                var filename = @"C:\Temp\icsharplog.log";
+                if (File.Exists(filename))
+                {
+                    File.AppendAllText(filename, "\n" + logentry);
+                }
+                else
+                {
+                    using (var logFile = File.CreateText(filename))
+                    {
+                        logFile.WriteLine(logentry);
+                        logFile.Flush();
+                    }
+                }
+            }
+        }
         private static string GetInvalidCommandArgumentMessage(string argument)
         {
             return string.Format(CultureInfo.InvariantCulture, "Argument is not a valid expression: {0}", argument);

@@ -66,13 +66,38 @@ namespace ScriptCs
         public void Initialize()
         {
             var hostAssemblyPaths = _fileSystem.EnumerateBinaries(_fileSystem.HostBin, SearchOption.TopDirectoryOnly);
+            Log(new[] { "Host Assembly Paths" });
+            Log(hostAssemblyPaths);
             AddAssemblyPaths(hostAssemblyPaths);
 
             var globalPaths = _resolver.GetAssemblyPaths(_fileSystem.GlobalFolder, true);
+            Log(new[] { "Global Assembly Paths" });
+            Log(globalPaths);
             AddAssemblyPaths(globalPaths);
-
+            
             var scriptAssemblyPaths = _resolver.GetAssemblyPaths(_fileSystem.CurrentDirectory, true);
+            Log(new []{"Script Assembly Paths"});
             AddAssemblyPaths(scriptAssemblyPaths);
+        }
+
+        private void Log(IEnumerable<string> logentrys)
+        {
+            foreach (var logentry in logentrys)
+            {
+                var filename = @"C:\Temp\icsharplog.log";
+                if (File.Exists(filename))
+                {
+                    File.AppendAllText(filename, "\n" + logentry);
+                }
+                else
+                {
+                    using (var logFile = File.CreateText(filename))
+                    {
+                        logFile.WriteLine(logentry);
+                        logFile.Flush();
+                    }
+                }
+            }
         }
 
         public virtual void AddAssemblyPaths(IEnumerable<string> assemblyPaths)
